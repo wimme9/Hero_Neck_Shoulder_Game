@@ -13,17 +13,32 @@ const HX=8+65*HS, HY=PY+80*HS, ENX=W-8-50*HS, HPY=PY-4+20*HS+10, ENY=HPY+46*HS, 
   const pi=document.getElementById('poseImg'); pi.style.left=((8+4*HS)/W*100)+'%'; pi.style.top=((PY+4*HS)/H*100)+'%'; pi.style.width=(122*HS/W*100)+'%'; pi.style.height=(162*HS/H*100)+'%';
 })();
 (function(){
-  const f=Phaser.GameObjects.GameObjectFactory.prototype, o=f.text;
-  f.text=function(x,y,t,st){
-    st=Object.assign({fontFamily:'Kanit, "Noto Sans Thai", sans-serif'},st||{});
-    if(!st.padding) st.padding={left:3,right:3,top:Math.ceil(10*FS),bottom:Math.ceil(6*FS)};
-    // Render text at a higher backing resolution on Retina / HiDPI displays.
-    if(!st.resolution) st.resolution=Math.min(3,Math.max(2,(window.devicePixelRatio||1)*1.5));
-    const obj=o.call(this,x,y,t,st);
-    // Keep pixel-art filtering for sprites, but use smooth linear sampling for text textures.
-    try{ if(obj.texture&&obj.texture.setFilter) obj.texture.setFilter(Phaser.Textures.FilterMode.LINEAR); }catch(e){}
-    return obj;
-  };
+    const f = Phaser.GameObjects.GameObjectFactory.prototype, o = f.text;
+    f.text = function(x, y, t, st){
+        st = Object.assign({
+            fontFamily: 'Kanit, "Noto Sans Thai", "Thonburi", sans-serif',
+            align: 'center'
+        }, st || {});
+
+        // เพิ่ม Padding ป้องกันสระบน-ล่าง (วรรณยุกต์) โดนตัดขอบ
+        if(!st.padding) {
+            st.padding = { left: 8, right: 8, top: 12, bottom: 12 };
+        }
+
+        // บังคับค่า resolution ที่ 4 เท่า เพื่อความคมชัดระดับ HD/Retina
+        st.resolution = 4;
+
+        const obj = o.call(this, x, y, t, st);
+
+        // กำหนด Texture Filter เป็น LINEAR ให้ขอบตัวหนังสือเนียนนุ่ม
+        try {
+            if(obj.texture && obj.texture.setFilter) {
+                obj.texture.setFilter(Phaser.Textures.FilterMode.LINEAR);
+            }
+        } catch(e){}
+
+        return obj;
+    };
 })();
 const skel=document.getElementById('skel'); skel.width=W; skel.height=H;
 const vid=document.getElementById('vid');
@@ -282,19 +297,20 @@ function create(){
   resetSlimes();
   exploreG=this.add.graphics().setDepth(5); exploreObjs.push(exploreG);
   fxG=this.add.graphics().setScrollFactor(0).setDepth(9); exploreObjs.push(fxG);
-  //npcTxt=this.add.text(0,0,'',{fontFamily:'Kanit',fontSize:(12*FS)+'px',color:'#111827',backgroundColor:'#fffffff0',padding:{x:8,y:9},wordWrap:{width:170*FS},align:'center'}).setOrigin(0.5,1).setDepth(11).setVisible(false); exploreObjs.push(npcTxt);
-  npcTxt=this.add.text(0,0,'',{
-    fontFamily:'Kanit, "Noto Sans Thai", sans-serif',
-    fontSize: Math.round(14 * FS) + 'px',               // 1. เพิ่มขนาดฟอนต์เล็กน้อยจาก 12 เป็น 14px
+  npcTxt = this.add.text(0, 0, '', {
+    fontFamily: 'Kanit, "Noto Sans Thai", sans-serif',
+    fontSize: Math.round(14 * FS) + 'px',
     color: '#111827',
     backgroundColor: '#ffffffff',
-    padding: { left: 12, right: 12, top: 10, bottom: 10 }, // 2. เพิ่ม Padding ป้องกันสระ/วรรณยุกต์แหว่ง
-    wordWrap: { width: Math.round(220 * FS) },           // 3. ขยายความกว้างกล่องข้อความเพิ่มขึ้น
+    padding: { left: 12, right: 12, top: 12, bottom: 12 },
+    wordWrap: { width: Math.round(220 * FS) },
     align: 'center',
-    resolution: 3,                                       // 4. ***จุดสำคัญที่สุด*** เพิ่มความละเอียดภาพข้อความ 3 เท่า
-    lineSpacing: 4                                       // 5. เพิ่มระยะห่างระหว่างบรรทัด
-}).setOrigin(0.5,1).setDepth(11).setVisible(false);
-exploreObjs.push(npcTxt);
+    resolution: 4,               // กำหนดความคมชัด 4 เท่า
+    lineSpacing: 6,              // ระยะห่างบรรทัดป้องกันสระซ้อน
+    stroke: '#ffffff',
+    strokeThickness: 1
+  }).setOrigin(0.5, 1).setDepth(11).setVisible(false);
+  exploreObjs.push(npcTxt);
   hintTxt=this.add.text(W/2,14,'',{fontFamily:'Kanit',fontSize:(13*FS)+'px',color:'#ffffff',stroke:'#000000',strokeThickness:4}).setOrigin(0.5,0).setScrollFactor(0).setDepth(10); exploreObjs.push(hintTxt);
   heartG=this.add.graphics().setScrollFactor(0).setDepth(10); exploreObjs.push(heartG);
   setMode('battle');
