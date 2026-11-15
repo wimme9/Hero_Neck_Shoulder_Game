@@ -112,6 +112,16 @@ button:active{transform:translateY(3px);box-shadow:0 1px 0 #14532d,0 2px 8px #16
 #victoryOverlay{overflow:hidden;}
 .cf{position:absolute;top:-20px;width:8px;height:14px;opacity:.9;pointer-events:none;animation:cfall linear forwards;}
 @keyframes cfall{to{transform:translateY(110vh) rotate(720deg);}}
+
+/* หน้าตรวจจับ: แถบสถานะ+ปุ่มติดขอบล่างเสมอ และจำกัดความสูงภาพกล้องบนมือถือแนวตั้ง */
+.det-bar{position:sticky;bottom:0;z-index:5;margin:10px -12px -12px;padding:8px 12px 12px;background:#0f172a;border-top:1px solid #ffffff22;border-radius:0 0 16px 16px;}
+#p-detect{max-height:78vh;max-height:calc(100dvh - 118px);}
+@media (orientation:portrait){
+  #p-detect #skel2{width:auto!important;max-width:100%;height:auto;max-height:42vh;max-height:42dvh;display:block;margin:0 auto;}
+  #p-detect .gbar{margin-bottom:2px;}
+  #p-detect>div[style*="margin-top:6px"]{margin-top:3px!important;font-size:12.5px;line-height:1.4;}
+  #p-detect>div:first-of-type{font-size:12.5px;line-height:1.4;}
+}
 </style>
 
 <style>
@@ -214,15 +224,17 @@ button:disabled{opacity:.42;cursor:not-allowed;filter:grayscale(.55);box-shadow:
 </nav>
 <section id="p-detect" class="panel" style="display:none;">
   <canvas id="skel2" width="420" height="560" style="width:100%;border-radius:12px;background:#000;"></canvas>
-  <div id="camMsg" style="color:#fbbf24;margin:6px 0;min-height:20px;"></div>
   <div>คะแนนท่าทาง: <b id="postScore">--</b> <span id="postLabel"></span></div>
   <div class="gbar"><div id="gScore"></div></div>
   <div style="margin-top:6px;">ไหล่เอียง: <b id="vSh">--</b>°</div><div class="gbar"><div id="gSh"></div></div>
   <div style="margin-top:6px;">ศีรษะเอียง: <b id="vHd">--</b>°</div><div class="gbar"><div id="gHd"></div></div>
   <div style="margin-top:6px;">คอสั้นลง/ไหล่ยก เทียบท่านั่งตรง: <b id="vNk">--</b></div><div class="gbar"><div id="gNk"></div></div>
-  <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
-    <button id="camBtn" class="opt">เปิดกล้อง</button>
-    <button id="calBtn" class="opt" disabled>ตั้งค่าท่านั่งตรงตอนนี้</button>
+  <div id="detBar" class="det-bar">
+    <div id="camMsg" style="color:#fbbf24;min-height:20px;"></div>
+    <div style="margin-top:6px;display:flex;gap:8px;flex-wrap:wrap;">
+      <button id="camBtn" class="opt">เปิดกล้อง</button>
+      <button id="calBtn" class="opt" disabled>ตั้งค่าท่านั่งตรงตอนนี้</button>
+    </div>
   </div>
   <div id="startPop" style="display:none;margin-top:12px;padding:12px;border:2px solid #4ade80;border-radius:14px;background:#052e16cc;text-align:center;">
     <div style="font-weight:800;color:#86efac;margin-bottom:8px;"><img class="emoji-icon" src="assets/icons/icon-2705.svg" alt="" aria-hidden="true"> ตั้งค่าท่านั่งเรียบร้อย พร้อมเล่นแล้ว! เลือกระดับแล้วเริ่มเกมได้เลย</div>
