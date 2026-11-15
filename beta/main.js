@@ -1346,8 +1346,20 @@ document.getElementById('startBtn').onclick=async ()=>{
     await new Promise(res=>{ bgImgEl.onload=res; bgImgEl.onerror=res; bgImgEl.src=getBgUrl(); });
     await Promise.all(Array.from({length:6},(_,i)=>new Promise(res=>{ const im=new Image(); im.onload=()=>{ window['__cityBg'+i]=im; res(); }; im.onerror=()=>res(); im.src='backgrounds/city-'+(i+1)+'.png'; })));
     gameStarted=true;
-    gameInstance=new Phaser.Game({type:Phaser.AUTO,width:W,height:H,transparent:true,parent:'phaser-container',render:{antialias:false,pixelArt:true,roundPixels:true,powerPreference:'low-power'},fps:{target:60,forceSetTimeOut:false},scene:{create,update}});
-    document.getElementById('stopGameBtn').style.display='block';
+    gameInstance = new Phaser.Game({
+    type: Phaser.AUTO,
+    width: W, height: H,
+    transparent: true,
+    parent: 'phaser-container',
+    render: {
+        antialias: true,         // เปิด Antialiasing ให้ขอบตัวอักษรเรียบเนียน
+        pixelArt: false,         // ปิด pixelArt ไม่ให้บังคับภาพพิกเซล
+        roundPixels: false,      // ปิด roundPixels ป้องกันพิกเซลเบียดตัวหนังสือ
+        powerPreference: 'high-performance'
+    },
+    fps: { target: 60, forceSetTimeOut: false },
+    scene: { create, update }
+});
     document.getElementById('vsOverlay').style.display='flex';
     document.getElementById('vsBtn').onclick=()=>{
       sfxClick();
