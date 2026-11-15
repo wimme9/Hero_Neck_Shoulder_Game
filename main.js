@@ -1205,8 +1205,8 @@ function brkRender(){
   BREAK.forEach((b,i)=>{ const li=document.getElementById('brkLi'+i); if(!li) return; li.style.opacity=(i<brkIdx)?'.5':'1'; li.style.borderColor=(i===brkIdx)?'#fde047':''; li.style.color=(i===brkIdx)?'#fde047':''; li.style.fontWeight=(i===brkIdx)?'700':''; });
   const total=Math.max(0,(BREAK.length-Math.max(brkIdx,0))*30-(brkIdx<0?0:30-brkLeft));
   const left=brkIdx<0?180:Math.max(0,(BREAK.length-brkIdx-1)*30+brkLeft);
-  const m=Math.floor(left/60), s=Math.ceil(left%60);
-  document.getElementById('brkTime').textContent=(brkIdx<0?'3:00':(m+':'+String(s===60?0:s).padStart(2,'0')));
+  const secL=Math.ceil(left), m=Math.floor(secL/60), s=secL%60;
+  document.getElementById('brkTime').textContent=(brkIdx<0?'3:00':(m+':'+String(s).padStart(2,'0')));
   document.getElementById('brkBar').style.width=(brkIdx<0?0:100*(1-left/180))+'%';
 }
 function brkNext(){
