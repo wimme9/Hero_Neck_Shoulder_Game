@@ -282,7 +282,19 @@ function create(){
   resetSlimes();
   exploreG=this.add.graphics().setDepth(5); exploreObjs.push(exploreG);
   fxG=this.add.graphics().setScrollFactor(0).setDepth(9); exploreObjs.push(fxG);
-  npcTxt=this.add.text(0,0,'',{fontFamily:'Kanit',fontSize:(12*FS)+'px',color:'#111827',backgroundColor:'#fffffff0',padding:{x:8,y:9},wordWrap:{width:170*FS},align:'center'}).setOrigin(0.5,1).setDepth(11).setVisible(false); exploreObjs.push(npcTxt);
+  //npcTxt=this.add.text(0,0,'',{fontFamily:'Kanit',fontSize:(12*FS)+'px',color:'#111827',backgroundColor:'#fffffff0',padding:{x:8,y:9},wordWrap:{width:170*FS},align:'center'}).setOrigin(0.5,1).setDepth(11).setVisible(false); exploreObjs.push(npcTxt);
+  npcTxt=this.add.text(0,0,'',{
+    fontFamily:'Kanit, "Noto Sans Thai", sans-serif',
+    fontSize: Math.round(14 * FS) + 'px',               // 1. เพิ่มขนาดฟอนต์เล็กน้อยจาก 12 เป็น 14px
+    color: '#111827',
+    backgroundColor: '#ffffffff',
+    padding: { left: 12, right: 12, top: 10, bottom: 10 }, // 2. เพิ่ม Padding ป้องกันสระ/วรรณยุกต์แหว่ง
+    wordWrap: { width: Math.round(220 * FS) },           // 3. ขยายความกว้างกล่องข้อความเพิ่มขึ้น
+    align: 'center',
+    resolution: 3,                                       // 4. ***จุดสำคัญที่สุด*** เพิ่มความละเอียดภาพข้อความ 3 เท่า
+    lineSpacing: 4                                       // 5. เพิ่มระยะห่างระหว่างบรรทัด
+}).setOrigin(0.5,1).setDepth(11).setVisible(false);
+exploreObjs.push(npcTxt);
   hintTxt=this.add.text(W/2,14,'',{fontFamily:'Kanit',fontSize:(13*FS)+'px',color:'#ffffff',stroke:'#000000',strokeThickness:4}).setOrigin(0.5,0).setScrollFactor(0).setDepth(10); exploreObjs.push(hintTxt);
   heartG=this.add.graphics().setScrollFactor(0).setDepth(10); exploreObjs.push(heartG);
   setMode('battle');
